@@ -1,4 +1,4 @@
-name: Build for different platforms
+name: Build static libs for different platforms
 on:
   push:
     tag:
@@ -18,7 +18,6 @@ jobs:
           cmakeVersion: latest
           ninjaVersion: latest
       - name: Run Build Script
-        working-directory: gd-extension
         run: ./build.sh
       - name: Archive Linux x86_64 Artifacts
         uses: actions/upload-artifact@v3
@@ -29,9 +28,6 @@ jobs:
   WindowsBuild:
     name: Windows Build x64
     runs-on: windows-2022
-    defaults:
-      run:
-        working-directory: ./gd-extension
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,7 +38,6 @@ jobs:
           cmakeVersion: latest
           ninjaVersion: latest
       - name: Run Build Script
-        working-directory: gd-extension
         run: ./build.bat
       - name: Archive Windows x64 Artifacts
         uses: actions/upload-artifact@v3
@@ -63,7 +58,6 @@ jobs:
           cmakeVersion: latest
           ninjaVersion: latest
       - name: Run Build Script
-        working-directory: gd-extension
         run: ./build_mac.sh
       - name: Archive Mac Universal 2 Artifacts
         uses: actions/upload-artifact@v3

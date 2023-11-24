@@ -36,7 +36,7 @@ else()
         HINTS
         "${CMAKE_PREFIX_PATH}"
         "${CMAKE_INSTALL_PREFIX}"
-        PATH_SUFFIXES include
+        PATH_SUFFIXES include dist/include
     )
 
     find_library(crypto_SHARED_LIBRARY
@@ -52,7 +52,7 @@ else()
         HINTS
         "${CMAKE_PREFIX_PATH}"
         "${CMAKE_INSTALL_PREFIX}"
-        PATH_SUFFIXES build/crypto build lib64 lib
+        PATH_SUFFIXES build/crypto build lib64 lib dist/lib
     )
 
     if (NOT crypto_LIBRARY)

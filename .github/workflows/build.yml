@@ -1,0 +1,104 @@
+name: Build for different platforms
+on:
+  push:
+    tag:
+      - build-*
+
+jobs:
+  LinuxBuild:
+    name: Linux Build x86_64
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
+      - name: Run Build Script
+        working-directory: gd-extension
+        run: ./build.sh
+      - name: Archive Linux x86_64 Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-x86_64
+          path: dist
+
+  WindowsBuild:
+    name: Windows Build x64
+    runs-on: windows-2022
+    defaults:
+      run:
+        working-directory: ./gd-extension
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
+      - name: Run Build Script
+        working-directory: gd-extension
+        run: ./build.bat
+      - name: Archive Windows x64 Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-x64
+          path: dist
+  
+  MacBuild:
+    name: Mac Build Universal (x86_64/arm64)
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
+      - name: Run Build Script
+        working-directory: gd-extension
+        run: ./build_mac.sh
+      - name: Archive Mac Universal 2 Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: mac-universal2
+          path: dist
+    
+  BuildRelease:
+    name: Package Builds
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+      - WindowsBuild
+      - LinuxBuild
+      - MacBuild
+    steps:
+      - name: Gather all build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      - name: Display structure of gathered artifacts
+        run: ls -R
+        working-directory: artifacts
+      - run: |
+          zip -r ../mac-universal2.zip *
+        working-directory: artifacts/mac-universal2
+      - run: |
+          zip -r ../windows-x64.zip *
+        working-directory: artifacts/windows-x64
+      - run: |
+          zip -r ../linux-x86_64.zip *
+        working-directory: artifacts/linux-x86_64
+      - uses: ncipollo/release-action@v1
+        with:
+          body: "Static libs for building into dynamic libraries"
+          artifacts: "linux-x86_64.zip,windows-x64.zip,mac-universal2.zip"
+          

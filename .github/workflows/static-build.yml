@@ -80,13 +80,13 @@ jobs:
         run: ls -R
         working-directory: artifacts
       - run: |
-          zip -r ../macos-universal2.zip *
+          zip -r ../../macos-universal2.zip *
         working-directory: artifacts/macos-universal2
       - run: |
-          zip -r ../windows-x64.zip *
+          zip -r ../../windows-x64.zip *
         working-directory: artifacts/windows-x64
       - run: |
-          zip -r ../linux-x86_64.zip *
+          zip -r ../../linux-x86_64.zip *
         working-directory: artifacts/linux-x86_64
       - uses: ncipollo/release-action@v1
         with:

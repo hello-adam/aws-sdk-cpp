@@ -1,8 +1,5 @@
 name: Build static libs for different platforms
-on:
-  push:
-    tag:
-      - build-*
+on: ["push"]
 
 jobs:
   LinuxBuild:
@@ -44,7 +41,7 @@ jobs:
         with:
           name: windows-x64
           path: dist
-  
+
   MacBuild:
     name: Mac Build Universal (x86_64/arm64)
     runs-on: macos-12
@@ -93,6 +90,9 @@ jobs:
         working-directory: artifacts/linux-x86_64
       - uses: ncipollo/release-action@v1
         with:
-          body: "Static libs for building into dynamic libraries"
+          name: ${{ github.run_number }}
+          tag: ${{ github.run_number }}
+          commit: ${{ github.sha }}
+          body: "Static libs for building into dynamic libs"
           artifacts: "linux-x86_64.zip,windows-x64.zip,mac-universal2.zip"
           

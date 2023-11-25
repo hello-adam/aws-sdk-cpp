@@ -39,13 +39,13 @@ else()
         PATH_SUFFIXES include dist/include
     )
 
-    find_library(crypto_SHARED_LIBRARY
-        NAMES libcrypto.so libcrypto.dylib
-        HINTS
-        "${CMAKE_PREFIX_PATH}"
-        "${CMAKE_INSTALL_PREFIX}"
-        PATH_SUFFIXES build/crypto build lib64 lib
-    )
+    # find_library(crypto_SHARED_LIBRARY
+    #     NAMES libcrypto.so libcrypto.dylib
+    #     HINTS
+    #     "${CMAKE_PREFIX_PATH}"
+    #     "${CMAKE_INSTALL_PREFIX}"
+    #     PATH_SUFFIXES build/crypto build lib64 lib
+    # )
 
     find_library(crypto_STATIC_LIBRARY
         NAMES libcrypto.a

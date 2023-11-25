@@ -45,15 +45,17 @@ endif()
 # OpenSSL
 # set(OPENSSL_INSTALL_DIR ${CMAKE_BINARY_DIR}/OpenSsl-install)
 # set(OPENSSL_INCLUDE_DIR ${OPENSSL_INSTALL_DIR}/include PARENT_SCOPE)
-ExternalProject_Add(OpenSsl
-  GIT_REPOSITORY "https://github.com/janbar/openssl-cmake.git"
-  GIT_TAG "1.1.1w-20231112"
-  GIT_SHALLOW ON
-  SOURCE_DIR ${CMAKE_BINARY_DIR}/OpenSsl
-  BINARY_DIR ${CMAKE_BINARY_DIR}/OpenSsl-build
-  CMAKE_CACHE_ARGS ${EXTRA_CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_SOURCE_DIR}/../dist
-  BUILD_BYPRODUCTS ZLIB_ROOT
-)
+
+if (WIN32)
+  set(OPENSSL_FILE_BASE windows-x64)
+elseif (APPLE)
+    set(OPENSSL_FILE_BASE macos-universal2)
+else()
+    set(OPENSSL_FILE_BASE linux-x86_64)
+endif()
+
+file(DOWNLOAD "https://github.com/hello-adam/openssl/releases/download/18/${OPENSSL_FILE_BASE}.zip" ${CMAKE_BINARY_DIR}/openssl.zip)
+file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/openssl.zip DESTINATION ${CMAKE_SOURCE_DIR}/../dist)
 # file(MAKE_DIRECTORY ${OPENSSL_INCLUDE_DIR})
 
 # add_library(OpenSSL::SSL STATIC IMPORTED GLOBAL)

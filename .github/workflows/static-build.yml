@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: recursive
       - name: Get latest CMake and Ninja
         uses: lukka/get-cmake@latest
         with:
@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: recursive
       - name: Get latest CMake and Ninja
         uses: lukka/get-cmake@latest
         with:
@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: recursive
       - name: Get latest CMake and Ninja
         uses: lukka/get-cmake@latest
         with:
@@ -59,7 +59,7 @@ jobs:
       - name: Archive Mac Universal 2 Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: mac-universal2
+          name: macos-universal2
           path: dist
     
   BuildRelease:
@@ -80,8 +80,8 @@ jobs:
         run: ls -R
         working-directory: artifacts
       - run: |
-          zip -r ../mac-universal2.zip *
-        working-directory: artifacts/mac-universal2
+          zip -r ../macos-universal2.zip *
+        working-directory: artifacts/macos-universal2
       - run: |
           zip -r ../windows-x64.zip *
         working-directory: artifacts/windows-x64
@@ -94,5 +94,5 @@ jobs:
           tag: ${{ github.run_number }}
           commit: ${{ github.sha }}
           body: "Static libs for building into dynamic libs"
-          artifacts: "linux-x86_64.zip,windows-x64.zip,mac-universal2.zip"
+          artifacts: "linux-x86_64.zip,windows-x64.zip,macos-universal2.zip"
           

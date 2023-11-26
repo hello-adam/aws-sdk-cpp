@@ -1,5 +1,6 @@
 
-SET /A INSTALL_DIR = %~dp0/dist
+SET /A INSTALL_DIR=%~dp0/dist
+echo Install Dir: %INSTALL_DIR%
 
 cmake -B builddeps -S thirdparty -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=MinSizeRel -A x64 -T v141 || goto :error
 cmake --build builddeps || goto :error

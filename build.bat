@@ -1,8 +1,8 @@
 
 
 cmake -B builddeps -S thirdparty -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=MinSizeRel -A x64 -T v141 || goto :error
-cmake --build builddeps || goto :error
-cmake --install builddeps || goto :error
+cmake --build builddeps --config MinSizeRel || goto :error
+cmake --install builddeps --config MinSizeRel || goto :error
 cmake -B build -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=MinSizeRel -A x64 -T v141 ^
  -DUSE_OPENSSL=ON ^
  -DENABLE_TESTING=OFF ^
@@ -18,8 +18,8 @@ cmake -B build -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=MinSizeRel -A x64 -
  -DZLIB_ROOT=%~dp0%dist ^
  -DZLIB_USE_STATIC_LIBS=ON || goto :error
  
-cmake --build build || goto :error
-cmake --install build || goto :error
+cmake --build build --config MinSizeRel || goto :error
+cmake --install build --config MinSizeRel || goto :error
 
 goto :EOF
 

@@ -3,8 +3,7 @@
 cmake -B builddeps -S thirdparty -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=MinSizeRel -A x64 -T v141 || goto :error
 cmake --build builddeps || goto :error
 cmake --install builddeps || goto :error
-cmake -G Ninja -B build ^
- -DCMAKE_BUILD_TYPE=MinSizeRel^
+cmake -B build -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=MinSizeRel -A x64 -T v141 ^
  -DUSE_OPENSSL=ON ^
  -DENABLE_TESTING=OFF ^
  -DUSE_CRT_HTTP_CLIENT=ON ^
